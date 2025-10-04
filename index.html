@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>babylya_228</title>
+
+<!-- Підключаємо милі крафтові шрифти з Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Pacifico', cursive;
+        background-color: #ffe6f0;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        text-align: center;
+    }
+
+    img {
+        max-width: 90%;
+        height: auto;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    input, button {
+        padding: 12px 25px;
+        margin: 10px;
+        border-radius: 12px;
+        border: 2px solid #f5c6d1;
+        font-size: 1rem;
+        font-family: 'Sacramento', cursive;
+    }
+
+    button {
+        cursor: pointer;
+        background-color: #ffc0cb;
+        color: #fff;
+        font-weight: bold;
+        transition: transform 0.3s, background-color 0.3s;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        background-color: #ff8fbf;
+    }
+
+    button.flipped {
+        transform: rotateY(180deg);
+        background-color: #fff;
+    }
+
+    .hidden { display: none; }
+
+    .gift-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .gift-grid button {
+        width: 120px;
+        height: 120px;
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+        .gift-grid button {
+            width: 80px;
+            height: 80px;
+            font-size: 0.7rem;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- 1. Вік -->
+<div id="ageScreen">
+    <img src="https://i.pinimg.com/736x/00/85/a9/0085a93b1f3107a55750df496df33442.jpg" alt="Вік">
+    <div>
+        <label>Ваш вік: <input type="number" id="ageInput" placeholder="Наприклад 18"></label>
+        <button onclick="submitAge()">Відправити</button>
+    </div>
+</div>
+
+<!-- 2. Ім'я -->
+<div id="nameScreen" class="hidden">
+    <label>Введіть ім'я: <input type="text" id="nameInput" placeholder="Наприклад кошк"></label>
+    <button onclick="submitName()">Відправити</button>
+</div>
+
+<!-- 3. Вибір подарунку -->
+<div id="giftScreen" class="hidden">
+    <h2>Виберіть подарунок 🎁</h2>
+    <div class="gift-grid" id="giftButtons">
+        <!-- Кнопки будуть додані JS -->
+    </div>
+</div>
+
+<!-- 4. Фінальна картинка -->
+<div id="finalScreen" class="hidden">
+    <img src="https://i.pinimg.com/736x/2b/d8/e6/2bd8e64abd77b3c75bdc79a8599473e0.jpg" alt="Подарунок">
+</div>
+
+<script>
+    const gifts = [
+        'https://fcdynamo.com/shop/product/SHarf-Dynamo-Kyiv-Ukraina-2025000004217',
+        'https://fcdynamo.com/shop/product/Myach-igrashka-D-Kyiv-malenkyi000004115',
+        'https://fcdynamo.com/shop/product/Kepka-FCDK-Elite-synya-2526000004151',
+        'https://fcdynamo.com/shop/product/SHarf-Dynamo-Kyiv-Zirky-2025000004116',
+        'https://fcdynamo.com/shop/product/Kepka-FCDK-1927000004278'
+    ];
+
+    function submitAge() {
+        const age = document.getElementById('ageInput').value;
+        if(age && age > 0) {
+            document.getElementById('ageScreen').classList.add('hidden');
+            document.getElementById('nameScreen').classList.remove('hidden');
+        } else {
+            alert('Введіть правильний вік');
+        }
+    }
+
+    function submitName() {
+        const name = document.getElementById('nameInput').value.trim().toLowerCase();
+        if(name === 'кошк') {
+            document.getElementById('nameScreen').classList.add('hidden');
+            showGifts();
+        } else {
+            alert('Неправильне ім\'я');
+        }
+    }
+
+    function showGifts() {
+        document.getElementById('giftScreen').classList.remove('hidden');
+        const giftButtonsDiv = document.getElementById('giftButtons');
+
+        const shuffledGifts = gifts.sort(() => Math.random() - 0.5);
+
+        shuffledGifts.forEach((giftUrl, index) => {
+            const btn = document.createElement('button');
+            btn.textContent = `🎁`;
+            btn.onclick = () => revealGift(btn, giftUrl);
+            giftButtonsDiv.appendChild(btn);
+        });
+    }
+
+    function revealGift(button, url) {
+        button.classList.add('flipped');
+        button.innerHTML = `<a href="${url}" target="_blank">🎉</a>`;
+        setTimeout(() => {
+            document.getElementById('giftScreen').classList.add('hidden');
+            document.getElementById('finalScreen').classList.remove('hidden');
+        }, 500);
+    }
+</script>
+
+</body>
+</html>
